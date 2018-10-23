@@ -23,4 +23,8 @@
 hs_err_pid*
 
 # IntellIJ
-.idea/
+.idea
+*.iml
+
+# target folder
+target/
