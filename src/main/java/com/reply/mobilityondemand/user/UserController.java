@@ -59,6 +59,7 @@ public class UserController {
         user.setUserId(userId);
         user.setName(newUser.getName());
         user.setAge(newUser.getAge());
+        user.setGender(newUser.getGender());
 
         logger.debug("Created a new user with userId: {}", userId);
 

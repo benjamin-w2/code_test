@@ -1,6 +1,7 @@
 package com.reply.mobilityondemand.user;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -19,6 +20,10 @@ public class User {
 
     @Column(name = "AGE")
     private Integer age;
+
+    @Column(name = "GENDER", length = 1)
+    @Convert(converter = GenderConverter.class)
+    private Gender gender;
 
     public UUID getUserId() {
         return userId;
@@ -42,5 +47,23 @@ public class User {
 
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", gender=" + gender +
+                '}';
     }
 }
