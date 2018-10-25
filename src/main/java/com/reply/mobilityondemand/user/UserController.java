@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -49,9 +50,8 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public HttpEntity<String> createAccount(
-            @RequestBody User newUser,
-            @Value("#{request.requestURL}") StringBuffer url) {
+    public HttpEntity<String> createUser(@RequestBody User newUser,
+                                         @Value("#{request.requestURL}") StringBuffer url) {
 
         UUID userId = UUID.randomUUID();
 
@@ -65,6 +65,42 @@ public class UserController {
 
         userRepository.save(user);
         return entityWithLocation(url, user.getUserId());
+    }
+
+    @RequestMapping(value = "/{userId}", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.CREATED)
+    public HttpEntity<String> updateUser(@PathVariable UUID userId,
+                                         @RequestBody User user,
+                                         @Value("#{request.requestURL}") StringBuffer url) {
+
+        if (user.getUserId() != null && !user.getUserId().equals(userId)) {
+            logger.info("UserId '{}' provided in the path does not match with body userId '{}'", userId, user.getUserId());
+            throw new UserIdMismatchException(userId, user.getUserId());
+        }
+
+        user.setUserId(userId);
+        userRepository.save(user);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(URI.create(url.toString()));
+        return new HttpEntity<>(headers);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public class UserIdMismatchException extends RuntimeException {
+        public UserIdMismatchException(UUID userIdPath, UUID userIdBody) {
+            super("UserId '" + userIdPath + "' provided in the path does not match with body userId '" + userIdBody + "'");
+        }
+    }
+
+    @RequestMapping(value = "/{userId}", method = RequestMethod.DELETE)
+    public void deleteUser(@PathVariable UUID userId) {
+        try {
+            userRepository.deleteById(userId);
+        } catch (EmptyResultDataAccessException e) {
+            logger.info("No user found with userId: {}", userId);
+            throw new UserNotFoundException(userId);
+        }
     }
 
     private HttpEntity<String> entityWithLocation(StringBuffer url, Object resourceId) {
