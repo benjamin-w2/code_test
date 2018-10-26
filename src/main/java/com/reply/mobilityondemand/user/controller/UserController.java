@@ -1,6 +1,8 @@
-package com.reply.mobilityondemand.user;
+package com.reply.mobilityondemand.user.controller;
 
 
+import com.reply.mobilityondemand.user.repository.UserRepository;
+import com.reply.mobilityondemand.user.domain.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

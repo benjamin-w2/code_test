@@ -1,4 +1,4 @@
-package com.reply.mobilityondemand.demand;
+package com.reply.mobilityondemand.demand.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

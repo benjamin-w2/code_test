@@ -1,6 +1,6 @@
-package com.reply.mobilityondemand.demand;
+package com.reply.mobilityondemand.demand.domain;
 
-import com.reply.mobilityondemand.user.User;
+import com.reply.mobilityondemand.user.domain.User;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -1,4 +1,4 @@
-package com.reply.mobilityondemand.user;
+package com.reply.mobilityondemand.user.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;

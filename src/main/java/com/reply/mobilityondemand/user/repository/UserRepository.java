@@ -1,5 +1,6 @@
-package com.reply.mobilityondemand.user;
+package com.reply.mobilityondemand.user.repository;
 
+import com.reply.mobilityondemand.user.domain.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
