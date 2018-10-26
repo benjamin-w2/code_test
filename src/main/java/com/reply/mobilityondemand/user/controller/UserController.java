@@ -1,8 +1,8 @@
 package com.reply.mobilityondemand.user.controller;
 
 
-import com.reply.mobilityondemand.user.repository.UserRepository;
 import com.reply.mobilityondemand.user.domain.User;
+import com.reply.mobilityondemand.user.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,20 +51,14 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public HttpEntity<String> createUser(@RequestBody User newUser,
+    public HttpEntity<String> createUser(@RequestBody User user,
                                          @Value("#{request.requestURL}") String url) {
 
         UUID userId = UUID.randomUUID();
-
-        User user = new User();
         user.setUserId(userId);
-        user.setName(newUser.getName());
-        user.setAge(newUser.getAge());
-        user.setGender(newUser.getGender());
-
-        logger.debug("Created a new user with userId: {}", userId);
 
         userRepository.save(user);
+        logger.info("Created a new user with userId: {}", userId);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(URI.create(url + "/" + userId));

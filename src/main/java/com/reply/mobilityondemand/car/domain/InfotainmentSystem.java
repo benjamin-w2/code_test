@@ -19,4 +19,37 @@ public class InfotainmentSystem {
 
     @Column(name = "HAS_NAVIGATION_SYSTEM", nullable = false)
     private Boolean hasNavigationSystem;
+
+    public UUID getInfotainmentSystemId() {
+        return infotainmentSystemId;
+    }
+
+    public void setInfotainmentSystemId(UUID infotainmentSystemId) {
+        this.infotainmentSystemId = infotainmentSystemId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Boolean getHasNavigationSystem() {
+        return hasNavigationSystem;
+    }
+
+    public void setHasNavigationSystem(Boolean hasNavigationSystem) {
+        this.hasNavigationSystem = hasNavigationSystem;
+    }
+
+    @Override
+    public String toString() {
+        return "InfotainmentSystem{" +
+                "infotainmentSystemId=" + infotainmentSystemId +
+                ", name='" + name + '\'' +
+                ", hasNavigationSystem=" + hasNavigationSystem +
+                '}';
+    }
 }
