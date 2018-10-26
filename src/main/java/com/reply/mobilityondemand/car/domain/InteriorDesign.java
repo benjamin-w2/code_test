@@ -1,4 +1,4 @@
-package com.reply.mobilityondemand.car;
+package com.reply.mobilityondemand.car.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
