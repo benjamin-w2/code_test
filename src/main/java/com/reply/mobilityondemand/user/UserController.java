@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriTemplate;
 
 import java.net.URI;
 import java.util.Optional;
@@ -51,7 +50,7 @@ public class UserController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public HttpEntity<String> createUser(@RequestBody User newUser,
-                                         @Value("#{request.requestURL}") StringBuffer url) {
+                                         @Value("#{request.requestURL}") String url) {
 
         UUID userId = UUID.randomUUID();
 
@@ -64,14 +63,17 @@ public class UserController {
         logger.debug("Created a new user with userId: {}", userId);
 
         userRepository.save(user);
-        return entityWithLocation(url, user.getUserId());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(URI.create(url + "/" + userId));
+        return new HttpEntity<>(headers);
     }
 
     @RequestMapping(value = "/{userId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.CREATED)
     public HttpEntity<String> updateUser(@PathVariable UUID userId,
                                          @RequestBody User user,
-                                         @Value("#{request.requestURL}") StringBuffer url) {
+                                         @Value("#{request.requestURL}") String url) {
 
         if (user.getUserId() != null && !user.getUserId().equals(userId)) {
             logger.info("UserId '{}' provided in the path does not match with body userId '{}'", userId, user.getUserId());
@@ -82,16 +84,10 @@ public class UserController {
         userRepository.save(user);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(URI.create(url.toString()));
+        headers.setLocation(URI.create(url));
         return new HttpEntity<>(headers);
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public class UserIdMismatchException extends RuntimeException {
-        public UserIdMismatchException(UUID userIdPath, UUID userIdBody) {
-            super("UserId '" + userIdPath + "' provided in the path does not match with body userId '" + userIdBody + "'");
-        }
-    }
 
     @RequestMapping(value = "/{userId}", method = RequestMethod.DELETE)
     public void deleteUser(@PathVariable UUID userId) {
@@ -103,14 +99,17 @@ public class UserController {
         }
     }
 
-    private HttpEntity<String> entityWithLocation(StringBuffer url, Object resourceId) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(getLocationForChildResource(url, resourceId));
-        return new HttpEntity<>(headers);
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public class UserNotFoundException extends RuntimeException {
+        public UserNotFoundException(UUID userId) {
+            super("No user found with userId: " + userId);
+        }
     }
 
-    private URI getLocationForChildResource(StringBuffer url, Object childIdentifier) {
-        UriTemplate template = new UriTemplate(url.append("/{childId}").toString());
-        return template.expand(childIdentifier);
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public class UserIdMismatchException extends RuntimeException {
+        public UserIdMismatchException(UUID userIdPath, UUID userIdBody) {
+            super("UserId '" + userIdPath + "' provided in the path does not match with body userId '" + userIdBody + "'");
+        }
     }
 }
