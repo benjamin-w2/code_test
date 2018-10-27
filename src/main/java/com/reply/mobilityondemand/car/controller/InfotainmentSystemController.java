@@ -1,7 +1,10 @@
 package com.reply.mobilityondemand.car.controller;
 
+import com.reply.mobilityondemand.car.controller.exception.DeleteInfotainmentSystemWithCarsException;
 import com.reply.mobilityondemand.car.controller.exception.InfotainmentSystemNotFoundException;
+import com.reply.mobilityondemand.car.domain.Car;
 import com.reply.mobilityondemand.car.domain.InfotainmentSystem;
+import com.reply.mobilityondemand.car.repository.CarRepository;
 import com.reply.mobilityondemand.car.repository.InfotainmentSystemRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -30,6 +34,9 @@ public class InfotainmentSystemController {
 
     @Autowired
     private InfotainmentSystemRepository infotainmentSystemRepository;
+
+    @Autowired
+    private CarRepository carRepository;
 
     @RequestMapping(method = RequestMethod.GET)
     public Iterable<InfotainmentSystem> getInfotainmentSystems() {
@@ -54,6 +61,12 @@ public class InfotainmentSystemController {
 
     @RequestMapping(value = "/{infotainmentSystemId}", method = RequestMethod.DELETE)
     public void deleteInfotainmentSystem(@PathVariable UUID infotainmentSystemId) {
+
+        List<Car> cars = carRepository.findByInfotainmentSystemInfotainmentSystemId(infotainmentSystemId);
+        if (!cars.isEmpty()) {
+            throw new DeleteInfotainmentSystemWithCarsException(infotainmentSystemId, cars.get(0).getCarId());
+        }
+
         try {
             infotainmentSystemRepository.deleteById(infotainmentSystemId);
         } catch (EmptyResultDataAccessException e) {
