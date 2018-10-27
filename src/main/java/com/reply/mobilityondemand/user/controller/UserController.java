@@ -79,6 +79,7 @@ public class UserController {
 
         user.setUserId(userId);
         userRepository.save(user);
+        logger.info("Created a new user with userId: {}", userId);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(URI.create(url));

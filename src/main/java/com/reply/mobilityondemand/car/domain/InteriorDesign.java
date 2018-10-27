@@ -2,13 +2,16 @@ package com.reply.mobilityondemand.car.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
 
 @Embeddable
 public class InteriorDesign {
 
+    @NotNull
     @Column(name = "HAS_AIR_CONDITION", nullable = false)
     private Boolean hasAirCondition;
 
+    @NotNull
     @Column(name = "HAS_SEAT_HEATING", nullable = false)
     private Boolean hasSeatHeating;
 

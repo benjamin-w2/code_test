@@ -2,6 +2,7 @@ package com.reply.mobilityondemand.car.controller;
 
 import com.reply.mobilityondemand.car.domain.InteriorDesign;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
@@ -17,6 +18,7 @@ public class CarJson {
 
     private UUID infotainmentSystemId;
 
+    @Valid
     @NotNull
     private InteriorDesign interiorDesign;
 

@@ -30,7 +30,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("cars")
 public class CarController {
-    
+
     private static final Logger logger = LoggerFactory.getLogger(CarController.class);
 
     @Autowired
@@ -70,8 +70,6 @@ public class CarController {
     public HttpEntity<String> createCar(@Valid @RequestBody CarJson carJson,
                                         @Value("#{request.requestURL}") String url) {
 
-        logger.info(carJson.toString());
-
         Car car = carJsonConverter.toCar(carJson);
 
         UUID carId = UUID.randomUUID();
@@ -100,6 +98,7 @@ public class CarController {
         car.setCarId(carId);
 
         carRepository.save(car);
+        logger.info("Created a new car with carId: {}", carId);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(URI.create(url));
@@ -116,5 +115,4 @@ public class CarController {
             throw new CarNotFoundException(carId);
         }
     }
-
 }
