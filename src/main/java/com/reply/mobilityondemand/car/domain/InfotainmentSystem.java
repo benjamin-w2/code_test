@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Entity
@@ -14,9 +15,11 @@ public class InfotainmentSystem {
     @Column(name = "INFOTAINMENT_SYSTEM_ID")
     private UUID infotainmentSystemId;
 
+    @NotNull
     @Column(name = "NAME", nullable = false)
     private String name;
 
+    @NotNull
     @Column(name = "HAS_NAVIGATION_SYSTEM", nullable = false)
     private Boolean hasNavigationSystem;
 

@@ -5,6 +5,7 @@ import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.UUID;
 
 @Entity
@@ -18,6 +19,7 @@ public class User {
     @Column(name = "NAME")
     private String name;
 
+    @PositiveOrZero
     @Column(name = "AGE")
     private Integer age;
 

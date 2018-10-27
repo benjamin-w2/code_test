@@ -1,5 +1,6 @@
 package com.reply.mobilityondemand.car.controller;
 
+import com.reply.mobilityondemand.car.controller.exception.InfotainmentSystemNotFoundException;
 import com.reply.mobilityondemand.car.domain.InfotainmentSystem;
 import com.reply.mobilityondemand.car.repository.InfotainmentSystemRepository;
 import org.slf4j.Logger;
@@ -17,11 +18,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("infotainment-system")
+@RequestMapping("infotainment-systems")
 public class InfotainmentSystemController {
 
     private static final Logger logger = LoggerFactory.getLogger(InfotainmentSystemController.class);
@@ -36,7 +38,7 @@ public class InfotainmentSystemController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public HttpEntity<String> createInfotainmentSystem(@RequestBody InfotainmentSystem infotainmentSystem,
+    public HttpEntity<String> createInfotainmentSystem(@Valid @RequestBody InfotainmentSystem infotainmentSystem,
                                                        @Value("#{request.requestURL}") String url) {
 
         UUID infotainmentSystemId = UUID.randomUUID();
@@ -51,7 +53,7 @@ public class InfotainmentSystemController {
     }
 
     @RequestMapping(value = "/{infotainmentSystemId}", method = RequestMethod.DELETE)
-    public void deleteUser(@PathVariable UUID infotainmentSystemId) {
+    public void deleteInfotainmentSystem(@PathVariable UUID infotainmentSystemId) {
         try {
             infotainmentSystemRepository.deleteById(infotainmentSystemId);
         } catch (EmptyResultDataAccessException e) {
@@ -60,10 +62,4 @@ public class InfotainmentSystemController {
         }
     }
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public class InfotainmentSystemNotFoundException extends RuntimeException {
-        public InfotainmentSystemNotFoundException(UUID infotainmentSystemId) {
-            super("No infotainment system found with infotainmentSystemId: " + infotainmentSystemId);
-        }
-    }
 }

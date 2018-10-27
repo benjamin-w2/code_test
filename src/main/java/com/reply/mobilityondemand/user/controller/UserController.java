@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.Optional;
 import java.util.UUID;
@@ -51,7 +52,7 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public HttpEntity<String> createUser(@RequestBody User user,
+    public HttpEntity<String> createUser(@Valid @RequestBody User user,
                                          @Value("#{request.requestURL}") String url) {
 
         UUID userId = UUID.randomUUID();
@@ -68,7 +69,7 @@ public class UserController {
     @RequestMapping(value = "/{userId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.CREATED)
     public HttpEntity<String> updateUser(@PathVariable UUID userId,
-                                         @RequestBody User user,
+                                         @Valid @RequestBody User user,
                                          @Value("#{request.requestURL}") String url) {
 
         if (user.getUserId() != null && !user.getUserId().equals(userId)) {
@@ -95,17 +96,4 @@ public class UserController {
         }
     }
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public class UserNotFoundException extends RuntimeException {
-        public UserNotFoundException(UUID userId) {
-            super("No user found with userId: " + userId);
-        }
-    }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public class UserIdMismatchException extends RuntimeException {
-        public UserIdMismatchException(UUID userIdPath, UUID userIdBody) {
-            super("UserId '" + userIdPath + "' provided in the path does not match with body userId '" + userIdBody + "'");
-        }
-    }
 }
