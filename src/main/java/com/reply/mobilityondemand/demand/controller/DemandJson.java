@@ -1,45 +1,37 @@
-package com.reply.mobilityondemand.demand.domain;
+package com.reply.mobilityondemand.demand.controller;
 
-import com.reply.mobilityondemand.user.domain.User;
+import com.reply.mobilityondemand.demand.domain.DesiredCarFeatures;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Entity
-@Table(name = "DEMAND")
-public class Demand {
+public class DemandJson {
 
-    @Id
-    @Column(name = "DEMAND_ID")
     private UUID demandId;
 
-    @Column(name = "PICK_UP_LOCATION", nullable = false)
+    @NotNull
     private Float pickUpLocation;
 
-    @Column(name = "DROP_OFF_LOCATION", nullable = false)
+    @NotNull
     private Float dropOffLocation;
 
-    @Column(name = "EARLIEST_PICK_UP_TIME", nullable = false)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    @NotNull
     private LocalDateTime earliestPickUpTime;
 
-    @Column(name = "LATEST_DROP_OFF_TIME", nullable = false)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    @NotNull
     private LocalDateTime latestDropOffTime;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "DESIRED_CAR_FEATURES_ID", nullable = false)
+    @Valid
+    @NotNull
     private DesiredCarFeatures desiredCarFeatures;
 
-    @ManyToOne
-    @JoinColumn(name = "USER_ID", nullable = false)
-    private User user;
+    @NotNull
+    private UUID userId;
 
     public UUID getDemandId() {
         return demandId;
@@ -89,24 +81,24 @@ public class Demand {
         this.desiredCarFeatures = desiredCarFeatures;
     }
 
-    public User getUser() {
-        return user;
+    public UUID getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(UUID userId) {
+        this.userId = userId;
     }
 
     @Override
     public String toString() {
-        return "Demand{" +
+        return "DemandJson{" +
                 "demandId=" + demandId +
                 ", pickUpLocation=" + pickUpLocation +
                 ", dropOffLocation=" + dropOffLocation +
                 ", earliestPickUpTime=" + earliestPickUpTime +
                 ", latestDropOffTime=" + latestDropOffTime +
                 ", desiredCarFeatures=" + desiredCarFeatures +
-                ", user=" + user +
+                ", userId=" + userId +
                 '}';
     }
 }

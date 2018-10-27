@@ -1,6 +1,11 @@
 package com.reply.mobilityondemand.user.controller;
 
 
+import com.reply.mobilityondemand.demand.domain.Demand;
+import com.reply.mobilityondemand.demand.repository.DemandRepository;
+import com.reply.mobilityondemand.user.controller.exception.DeleteUserWithDemandsException;
+import com.reply.mobilityondemand.user.controller.exception.UserIdMismatchException;
+import com.reply.mobilityondemand.user.controller.exception.UserNotFoundException;
 import com.reply.mobilityondemand.user.domain.User;
 import com.reply.mobilityondemand.user.repository.UserRepository;
 import org.slf4j.Logger;
@@ -20,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -31,6 +37,9 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private DemandRepository demandRepository;
 
     @RequestMapping(method = RequestMethod.GET)
     public Iterable<User> getUsers() {
@@ -89,6 +98,12 @@ public class UserController {
 
     @RequestMapping(value = "/{userId}", method = RequestMethod.DELETE)
     public void deleteUser(@PathVariable UUID userId) {
+
+        List<Demand> demands = demandRepository.findByUserUserId(userId);
+        if (!demands.isEmpty()) {
+            throw new DeleteUserWithDemandsException(userId, demands.get(0).getDemandId());
+        }
+
         try {
             userRepository.deleteById(userId);
         } catch (EmptyResultDataAccessException e) {

@@ -34,7 +34,6 @@ public class CarJsonConverter {
             car.setInfotainmentSystem(getInfotainmentSystem(carJson.getInfotainmentSystemId()));
         }
 
-
         return car;
     }
 
