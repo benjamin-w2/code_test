@@ -30,9 +30,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("cars")
 public class CarController {
-
-    // TODO null checks
-
+    
     private static final Logger logger = LoggerFactory.getLogger(CarController.class);
 
     @Autowired
