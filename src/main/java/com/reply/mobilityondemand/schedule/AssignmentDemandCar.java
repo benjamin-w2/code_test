@@ -1,4 +1,4 @@
-package com.reply.mobilityondemand.schedule.controller;
+package com.reply.mobilityondemand.schedule;
 
 
 import com.reply.mobilityondemand.car.domain.Car;

@@ -1,4 +1,4 @@
-package com.reply.mobilityondemand.schedule.controller;
+package com.reply.mobilityondemand.schedule.service;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
