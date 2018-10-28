@@ -39,7 +39,7 @@ public class DemandJsonConverter {
 
     private void validateDemandJson(DemandJson demandJson) {
         if (!demandJson.getEarliestPickUpTime().isBefore(demandJson.getLatestDropOffTime())) {
-            throw new DemandJsonConverterException("Earliest Pick Up Time has to be before latest drop off time");
+            throw new DemandJsonConverterException("Earliest pick up time has to be before latest drop off time");
         }
     }
 
