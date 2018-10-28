@@ -22,6 +22,8 @@ public class DemandJsonConverter {
 
     public Demand toDemand(DemandJson demandJson) {
 
+        validateDemandJson(demandJson);
+
         Demand demand = new Demand();
         demand.setDemandId(demandJson.getDemandId());
         demand.setPickUpLocation(demandJson.getPickUpLocation());
@@ -33,6 +35,12 @@ public class DemandJsonConverter {
         demand.setUser(getUser(demandJson.getUserId()));
 
         return demand;
+    }
+
+    private void validateDemandJson(DemandJson demandJson) {
+        if (!demandJson.getEarliestPickUpTime().isBefore(demandJson.getLatestDropOffTime())) {
+            throw new DemandJsonConverterException("Earliest Pick Up Time has to be before latest drop off time");
+        }
     }
 
     private User getUser(UUID userId) {
