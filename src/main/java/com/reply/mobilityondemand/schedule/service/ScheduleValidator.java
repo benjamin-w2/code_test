@@ -5,6 +5,7 @@ import com.reply.mobilityondemand.car.domain.InfotainmentSystem;
 import com.reply.mobilityondemand.car.domain.InteriorDesign;
 import com.reply.mobilityondemand.demand.domain.Demand;
 import com.reply.mobilityondemand.demand.domain.DesiredCarFeatures;
+import com.reply.mobilityondemand.schedule.exception.UserDemandsOverlapException;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -26,8 +27,7 @@ public class ScheduleValidator {
                 if (demand1.getUser().equals(demand2.getUser()) &&
                         areBookingTimesOverlapping(demand1, demand2)) {
 
-                    // TODO use other exception
-                    throw new RuntimeException("Times of demand '" + demand1.getDemandId() + "' and demand '" +
+                    throw new UserDemandsOverlapException("Times of demand '" + demand1.getDemandId() + "' and demand '" +
                             demand2.getDemandId() + "' of user '" + demand1.getUser().getUserId() + "' are overlapping");
                 }
             }
@@ -42,7 +42,6 @@ public class ScheduleValidator {
                         demand2.getEarliestPickUpTime().isBefore(demand1.getLatestDropOffTime()));
     }
 
-    // TODO move out of here?
     public boolean isValidAssigment(Car car, Demand demand, Map<Demand, Car> currentSchedule) {
 
         return carHasDesiredFeatures(car, demand.getDesiredCarFeatures()) &&
