@@ -39,7 +39,7 @@ public class InfotainmentSystemController {
     private CarRepository carRepository;
 
     @RequestMapping(method = RequestMethod.GET)
-    public Iterable<InfotainmentSystem> getInfotainmentSystems() {
+    public List<InfotainmentSystem> getInfotainmentSystems() {
         return infotainmentSystemRepository.findAll();
     }
 

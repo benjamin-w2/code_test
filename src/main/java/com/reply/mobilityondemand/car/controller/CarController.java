@@ -40,7 +40,7 @@ public class CarController {
     private CarJsonConverter carJsonConverter;
 
     @RequestMapping(method = RequestMethod.GET)
-    public Iterable<CarJson> getCars() {
+    public List<CarJson> getCars() {
 
         List<CarJson> carJsonList = new ArrayList<>();
 

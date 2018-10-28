@@ -42,7 +42,7 @@ public class UserController {
     private DemandRepository demandRepository;
 
     @RequestMapping(method = RequestMethod.GET)
-    public Iterable<User> getUsers() {
+    public List<User> getUsers() {
         return userRepository.findAll();
     }
 

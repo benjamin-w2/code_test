@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -108,5 +109,24 @@ public class Demand {
                 ", desiredCarFeatures=" + desiredCarFeatures +
                 ", user=" + user +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Demand demand = (Demand) o;
+        return Objects.equals(demandId, demand.demandId) &&
+                Objects.equals(pickUpLocation, demand.pickUpLocation) &&
+                Objects.equals(dropOffLocation, demand.dropOffLocation) &&
+                Objects.equals(earliestPickUpTime, demand.earliestPickUpTime) &&
+                Objects.equals(latestDropOffTime, demand.latestDropOffTime) &&
+                Objects.equals(desiredCarFeatures, demand.desiredCarFeatures) &&
+                Objects.equals(user, demand.user);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(demandId, pickUpLocation, dropOffLocation, earliestPickUpTime, latestDropOffTime, desiredCarFeatures, user);
     }
 }

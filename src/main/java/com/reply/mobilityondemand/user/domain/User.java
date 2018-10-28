@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.PositiveOrZero;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -67,5 +68,22 @@ public class User {
                 ", age=" + age +
                 ", gender=" + gender +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(userId, user.userId) &&
+                Objects.equals(name, user.name) &&
+                Objects.equals(age, user.age) &&
+                gender == user.gender;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(userId, name, age, gender);
     }
 }

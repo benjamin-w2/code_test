@@ -44,7 +44,7 @@ public class DemandController {
     private DesiredCarFeaturesRepository desiredCarFeaturesRepository;
 
     @RequestMapping(method = RequestMethod.GET)
-    public Iterable<DemandJson> getDemands() {
+    public List<DemandJson> getDemands() {
 
         List<DemandJson> demandJsonList = new ArrayList<>();
 
@@ -74,6 +74,8 @@ public class DemandController {
     public HttpEntity<String> createDemand(@Valid @RequestBody DemandJson demandJson,
                                            @Value("#{request.requestURL}") String url) {
 
+        // TODO validate pickUp isBefore dropOff
+
         Demand demand = demandJsonConverter.toDemand(demandJson);
 
         UUID demandId = UUID.randomUUID();
@@ -94,6 +96,8 @@ public class DemandController {
     public HttpEntity<String> updateDemand(@PathVariable UUID demandId,
                                            @Valid @RequestBody DemandJson demandJson,
                                            @Value("#{request.requestURL}") String url) {
+
+        // TODO validate pickUp isBefore dropOff
 
         if (demandJson.getDemandId() != null && !demandJson.getDemandId().equals(demandId)) {
             logger.info("DemandId '{}' provided in the path does not match with body demandId '{}'", demandId, demandJson.getDemandId());
