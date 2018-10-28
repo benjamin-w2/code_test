@@ -1,5 +1,7 @@
 # Running the application
 
+If not already done, set the `JAVA_HOME` environment variable to a jdk11 path.
+
 ```
 mvn package && docker build --tag code_test .
 
@@ -13,4 +15,6 @@ docker run -t -i -p 8080:8080 code_test
 * User Name: `h2_user`
 * Password: `h2_user`
 
+# UML class diagram
 
+Can be found in the file `class_diagram.jpg`.
